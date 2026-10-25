@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Student Reviewer - Backend (Auth + Database)
 
 ## Setup
@@ -24,3 +25,6 @@ Logout stores the token's id in `revoked_tokens`, so it stops working immediatel
 curl -X POST localhost:5000/api/auth/register -H "Content-Type: application/json" \
   -d '{"name":"Juan Dela Cruz","email":"juan@example.com","password":"password123"}'
 ```
+=======
+# application_group_3
+>>>>>>> 4fb44c40ef2f32862468856ebc04a0f956f801b5
