@@ -1,6 +1,6 @@
 -- Document-Based Student Reviewer System : starting database (MySQL 8+)
 -- One table per Model in the proposal: User, StudyFile, Section, Flashcard, Question, QuizAttempt
--- Run with:  mysql -u root -p < database/schema.sql      (or: npm run db:init)
+-- Run with:  mysql -u root -p < backend/database/schema.sql      (or: npm run db:init)
 
 CREATE DATABASE IF NOT EXISTS student_reviewer
   CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
