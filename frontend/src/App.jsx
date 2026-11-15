@@ -1,8 +1,8 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { useAuth } from './AuthContext';
-import Login from './pages/Login.jsx';
-import Register from './pages/Register.jsx';
-import Dashboard from './pages/Dashboard.jsx';
+import { useAuth } from './context/AuthContext';
+import Login from './views/Login.jsx';
+import Register from './views/Register.jsx';
+import Dashboard from './views/Dashboard.jsx';
 
 function Protected({ children }) {
   const { user, loading } = useAuth();

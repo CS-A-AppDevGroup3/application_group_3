@@ -2,13 +2,16 @@
   "name": "student-reviewer-backend",
   "version": "0.1.0",
   "description": "Document-Based Student Reviewer System - REST API (Express + MySQL)",
-  "main": "src/server.js",
+  "main": "backend/src/server.js",
   "scripts": {
-    "start": "node src/server.js",
+    "start": "node backend/src/server.js",
+    "go": "npm run setup && npm run dev",
+    "setup": "node backend/scripts/setup.js && npm run db:init",
+    "postinstall": "npm install --prefix frontend",
     "dev": "concurrently -n api,web -c blue,green \"npm:dev:server\" \"npm:dev:client\"",
-    "dev:server": "node --watch src/server.js",
+    "dev:server": "node --watch backend/src/server.js",
     "dev:client": "npm run dev --prefix frontend",
-    "db:init": "node database/init.js"
+    "db:init": "node backend/database/init.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -18,5 +21,8 @@
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.9.7"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
   }
 }
