@@ -1,13 +1,14 @@
 # Student Reviewer
 
-A document-based student reviewer system. Students upload a study file and review only what that file contains. The project has an Express + MySQL backend (at the repository root) and a React frontend (in `frontend/`).
+A document-based student reviewer system. Students upload a study file and review only what that file contains. The project has an Express + MySQL backend (in `backend/`) and a React frontend (in `frontend/`), organized with the MVC architecture from the project proposal.
 
-**Last updated:** November 1, 2026
+**Last updated:** November 16, 2026
 
 ## Update log
 
 | Date | Part | What changed |
 | --- | --- | --- |
+| November 16, 2026 | Structure | Reorganized the repository into the MVC layout from the project proposal: `backend/` holds the Model, Controller, and routes, and `frontend/` holds the View. Files were only moved and their import paths updated. No feature, API endpoint, or npm command changed. |
 | November 1, 2026 | Frontend | Added the React + Vite app in `frontend/`: Register page, Log in page, and a protected Dashboard connected to the backend auth API. `npm run dev` now starts the backend and frontend together. |
 | October 28, 2026 | Backend | Added the MySQL database schema, the User model, and the AuthController (register, login, logout, profile) with JWT authentication and token revocation on logout. |
 
@@ -23,16 +24,46 @@ The database schema already defines study files, sections, flashcards, questions
 
 ## Project structure
 
+The project follows the MVC (Model-View-Controller) architecture described in the proposal.
+
 ```text
 application_group_3/
-├── database/        MySQL schema and setup script
-├── src/             Express backend (config, models, controllers, middleware, routes)
-├── frontend/        React + Vite app
-├── .env.example     backend settings template
-├── package.json     backend dependencies and scripts (also runs both apps)
+├── backend/                         Express REST API (Model + Controller)
+│   ├── database/
+│   │   ├── schema.sql               MySQL schema (one table per Model)
+│   │   └── init.js                  setup script  ->  npm run db:init
+│   └── src/
+│       ├── models/                  MODEL       User.js (StudyFile, Section, Flashcard, Question, QuizAttempt go here)
+│       ├── controllers/             CONTROLLER  AuthController.js (File, Reviewer, Quiz, Progress go here)
+│       ├── routes/                  REST endpoints that map URLs to controllers
+│       ├── middleware/              request guards (JWT authentication)
+│       ├── config/                  database connection pool
+│       ├── app.js                   Express app setup
+│       └── server.js                server entry point
+├── frontend/                        React + Vite app (View)
+│   └── src/
+│       ├── views/                   VIEW        Login, Register, Dashboard pages
+│       ├── components/              reusable interface pieces (AuthShell)
+│       ├── context/                 session state shared by the views (AuthContext)
+│       ├── services/                API client that calls the backend (api.js)
+│       ├── App.jsx                  routes and access guards
+│       ├── main.jsx                 app entry point
+│       └── styles.css
+├── .env.example                     backend settings template
+├── package.json                     backend dependencies and scripts (also runs both apps)
 ├── LICENSE
 └── README.md
 ```
+
+### MVC mapping
+
+| Layer | Folder | Role | Currently built |
+| --- | --- | --- | --- |
+| Model | `backend/src/models/`, `backend/database/` | Data and business rules | `User` model, full database schema |
+| View | `frontend/src/views/`, `frontend/src/components/` | What the student sees; no business logic | Register, Log in, Dashboard |
+| Controller | `backend/src/controllers/`, `backend/src/routes/` | Receives requests, calls the Model, returns the result to the View | `AuthController` and `/api/auth/*` routes |
+
+Request flow: a view calls the API through `frontend/src/services/api.js`, the route sends the request to a controller, the controller calls the model, and the model reads or writes MySQL. The controller returns JSON and the view displays it.
 
 ## Requirements
 
@@ -252,7 +283,7 @@ npm run dev:client
 | --- | --- |
 | `npm install` | Install the backend dependencies |
 | `npm install --prefix frontend` | Install the frontend dependencies |
-| `npm run db:init` | Create the configured database and tables from `database/schema.sql` |
+| `npm run db:init` | Create the configured database and tables from `backend/database/schema.sql` |
 | `npm run dev` | Run the backend and frontend together |
 | `npm run dev:server` | Run only the backend, with Node's file watcher |
 | `npm run dev:client` | Run only the frontend |
